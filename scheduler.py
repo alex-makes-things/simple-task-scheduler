@@ -11,7 +11,10 @@ class Scheduler:
         self.tasks[str(task.__name__)] = Task(task, priority)    #Refresh dictionary from the tasklist
     
     def removeTask(self, task):
-        del self.tasks[task.__name__]
+        try:   #Avoid errors in case of missing task, keep gc.collect() for good measure
+            del self.tasks[task.__name__]
+        except:
+            pass
         gc.collect()     #Deleting objects from dictionaries (del) leaves the objects in memory, so we garbage collect to avoid leaks
 
     def clearTaskTree(self):
